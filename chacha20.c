@@ -36,19 +36,12 @@ apply_rules(uint32_t *a, uint32_t *b, uint32_t *c, uint32_t *d)
 }
 
 void
-apply_qround(const int qround[], uint32_t *state)
+apply_qround(const int *qround, uint32_t *state)
 {
-  uint32_t a = state[qround[0]];
-  uint32_t b = state[qround[1]];
-  uint32_t c = state[qround[2]];
-  uint32_t d = state[qround[3]];
-
-  apply_rules(&a, &b, &c, &d);
-
-  state[qround[0]] = a;
-  state[qround[1]] = b;
-  state[qround[2]] = c;
-  state[qround[3]] = d;
+  apply_rules(&state[qround[0]],
+              &state[qround[1]],
+              &state[qround[2]],
+              &state[qround[3]]);
 }
 
 uint32_t
