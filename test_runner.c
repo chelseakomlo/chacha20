@@ -10,7 +10,7 @@ void print_failed_message(int total_failed) {
   printf("Total number of tests failed: %d \n", total_failed);
 }
 
-void main(void) {
+int main(void) {
   int total_passed=0;
   int total_failed=0;
 
@@ -24,5 +24,6 @@ void main(void) {
 
   print_success_message(total_passed);
   print_failed_message(total_failed);
+  return 0;
 }
 
