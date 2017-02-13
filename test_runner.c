@@ -4,11 +4,11 @@
 
 void print_success_message(int total_passed) {
   printf("Total number of tests passed: %d \n", total_passed);
-};
+}
 
 void print_failed_message(int total_failed) {
   printf("Total number of tests failed: %d \n", total_failed);
-};
+}
 
 void main(void) {
   int total_passed=0;

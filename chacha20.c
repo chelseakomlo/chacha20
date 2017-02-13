@@ -27,12 +27,16 @@ rotate_32(uint32_t a, int i)
 }
 
 void
-apply_rules(uint32_t *a, uint32_t *b, uint32_t *c, uint32_t *d)
+apply_rules(uint32_t *_a, uint32_t *_b, uint32_t *_c, uint32_t *_d)
 {
-  *a += *b; *d ^= *a; *d = rotate_32(*d, 16);
-  *c += *d; *b ^= *c; *b = rotate_32(*b, 12);
-  *a += *b; *d ^= *a; *d = rotate_32(*d, 8);
-  *c += *d; *b ^= *c; *b = rotate_32(*b, 7);
+  uint32_t a = *_a; uint32_t b = *_b; uint32_t c = *_c; uint32_t d = *_d;
+
+  a += b; d ^= a; d = rotate_32(d, 16);
+  c += d; b ^= c; b = rotate_32(b, 12);
+  a += b; d ^= a; d = rotate_32(d, 8);
+  c += d; b ^= c; b = rotate_32(b, 7);
+
+  *_a = a; *_b = b; *_c = c; *_d = d;
 }
 
 void
@@ -81,7 +85,7 @@ build_initial_block(uint8_t *key,
 
 void
 chacha20_block(uint32_t *state) {
-  uint32_t working_state[16];
+  uint32_t working_state[BLOCK_LENGTH];
   for (int i=0; i<BLOCK_LENGTH; i++){
     working_state[i] = state[i];
   }
