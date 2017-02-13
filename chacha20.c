@@ -84,7 +84,22 @@ build_initial_block(uint8_t *key,
 }
 
 void
-chacha20_block(uint32_t *state) {
+serialize(uint32_t *state, uint8_t *serialized)
+{
+  int counter = 0;
+  for (int i=0; i<BLOCK_LENGTH; i++) {
+    uint32_t b = state[i];
+    serialized[counter+3] = b >> 24;
+    serialized[counter+2] = b >> 16;
+    serialized[counter+1] = b >> 8;
+    serialized[counter] = b;
+    counter += 4;
+  }
+}
+
+void
+_chacha20_block(uint32_t *state)
+{
   uint32_t working_state[BLOCK_LENGTH];
   for (int i=0; i<BLOCK_LENGTH; i++){
     working_state[i] = state[i];
@@ -104,6 +119,13 @@ chacha20_block(uint32_t *state) {
   for (int i=0; i<BLOCK_LENGTH; i++) {
     state[i] += working_state[i];
   }
-
-  // TODO serialize
 }
+
+void
+chacha20_block(uint32_t *state, uint8_t *output)
+{
+  _chacha20_block(state);
+  serialize(state, output);
+}
+
+

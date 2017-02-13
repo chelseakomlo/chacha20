@@ -9,7 +9,9 @@ int (*all_tests[])(void) = {
   test_apply_rules,
   test_to_uint32,
   test_to_uint32_high_val,
-  test_block_function
+  test_block_function,
+  test_serialize,
+  test_block_function_api
 };
 
 #endif
