@@ -15,3 +15,6 @@ test_run:
 
 clean:
 	rm $(TEST_MAIN)
+
+check-leaks:
+	valgrind --leak-check=yes --error-limit=no --show-reachable=yes ./$(TEST_MAIN)
