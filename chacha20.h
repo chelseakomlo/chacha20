@@ -6,10 +6,10 @@
 #define NUMBER_ROUNDS 10
 
 void chacha20_encrypt(uint8_t *key,
-                 uint32_t counter,
-                 uint8_t *nonce,
-                 unsigned char *plaintext,
-                 uint32_t plaintext_length,
-                 unsigned char *ciphertext);
+                      uint32_t counter,
+                      uint8_t *nonce,
+                      unsigned char *plaintext,
+                      uint32_t plaintext_length,
+                      unsigned char *ciphertext);
 
 #endif
