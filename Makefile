@@ -1,15 +1,17 @@
-CC=gcc
-CFLAGS=-Wall
+CC = gcc
+CFLAGS = -Wall
 
 TEST_FILES=test_runner.c utils.c test_utils.c
+
+TEST_MAIN = test_runner
 
 test: test_build test_run
 
 test_build:
-	@$(CC) $(CFLAGS) $(TEST_FILES) -o test_runner
+	@$(CC) $(CFLAGS) $(TEST_FILES) -o $(TEST_MAIN)
 
 test_run:
-	@-./test_runner
+	@-./$(TEST_MAIN)
 
 clean:
-	rm test_runner
+	rm $(TEST_MAIN)
