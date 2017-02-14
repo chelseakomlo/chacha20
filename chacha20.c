@@ -54,7 +54,6 @@ to_uint32(uint8_t a, uint8_t b, uint8_t c, uint8_t d)
   return (d << 24) | (c << 16) | (b << 8) | a;
 }
 
-// TODO: check for valid inputs
 void
 _build_initial_block(uint8_t *key,
                     uint32_t counter,

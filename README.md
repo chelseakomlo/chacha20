@@ -5,7 +5,7 @@ For learning purposes only, not meant for use.
 TODO:
   - Clean up Makefile
   - Implement full API
-  - Error handling, length checking, etc
+  - Error handling, length and input checking, etc
 
 References:
 
