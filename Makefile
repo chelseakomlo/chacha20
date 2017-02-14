@@ -1,10 +1,12 @@
 CC=gcc
-CFLAGS = -Wall
+CFLAGS=-Wall
+
+TEST_FILES=test_runner.c utils.c
 
 test: test_build test_run
 
 test_build:
-	@$(CC) $(CFLAGS) test_runner.c -o test_runner
+	@$(CC) $(CFLAGS) $(TEST_FILES) -o test_runner
 
 test_run:
 	@-./test_runner

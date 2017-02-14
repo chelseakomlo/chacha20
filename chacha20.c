@@ -3,8 +3,8 @@
 #include <stdio.h>
 #include <stdint.h>
 
-#define BLOCK_LENGTH 16
-#define NUMBER_ROUNDS 10
+#include "chacha20.h"
+#include "utils.h"
 
 const int ROUND_1[] = {0, 4, 8, 12};
 const int ROUND_2[] = {1, 5, 9, 13};
@@ -56,7 +56,7 @@ to_uint32(uint8_t a, uint8_t b, uint8_t c, uint8_t d)
 
 // TODO: check for valid inputs
 void
-build_initial_block(uint8_t *key,
+_build_initial_block(uint8_t *key,
                     uint32_t counter,
                     uint8_t *nonce,
                     uint32_t *state)
@@ -81,20 +81,6 @@ build_initial_block(uint8_t *key,
   state[13] = to_uint32(nonce[0], nonce[1], nonce[2], nonce[3]);
   state[14] = to_uint32(nonce[4], nonce[5], nonce[6], nonce[7]);
   state[15] = to_uint32(nonce[8], nonce[9], nonce[10], nonce[11]);
-}
-
-void
-serialize(uint32_t *state, uint8_t *serialized)
-{
-  int counter = 0;
-  for (int i=0; i<BLOCK_LENGTH; i++) {
-    uint32_t b = state[i];
-    serialized[counter+3] = b >> 24;
-    serialized[counter+2] = b >> 16;
-    serialized[counter+1] = b >> 8;
-    serialized[counter] = b;
-    counter += 4;
-  }
 }
 
 void
@@ -128,4 +114,25 @@ chacha20_block(uint32_t *state, uint8_t *output)
   serialize(state, output);
 }
 
+void
+build_initial_block(uint8_t *key,
+                    uint32_t counter,
+                    uint8_t *nonce,
+                    unsigned char *output)
+{
+  uint32_t *state = malloc(BLOCK_LENGTH*sizeof(char));
+  _build_initial_block(key, counter, nonce, state);
+  serialize(state, output);
+  free(state);
+}
+
+// TODO finish
+void chacha20_encrypt(uint8_t *key,
+                 uint32_t counter,
+                 uint8_t *nonce,
+                 unsigned char *plaintext,
+                 uint32_t plaintext_length,
+                 unsigned char *ciphertext)
+{
+}
 
