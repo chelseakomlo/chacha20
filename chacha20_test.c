@@ -2,17 +2,7 @@
 #include <stdio.h>
 
 #include "chacha20.c"
-
-int
-is_equal(const uint32_t *expected, uint32_t *actual, int length)
-{
-  for (int i=0; i<length; i++) {
-    if (expected[i] != actual[i]) {
-      return 0;
-    }
-  }
-  return 1;
-}
+#include "test_utils.h"
 
 int
 test_build_initial_block(void)
@@ -36,7 +26,7 @@ test_build_initial_block(void)
   uint32_t *state = malloc(BLOCK_LENGTH*8);
 
   _build_initial_block(key, counter, nonce, state);
-  int is_eq = is_equal(expected, state, BLOCK_LENGTH);
+  int is_eq = is_equal_uint32(expected, state, BLOCK_LENGTH);
 
   free(state);
   return is_eq;
@@ -59,7 +49,7 @@ test_apply_qround(void)
   int sample_qround[] = {2, 7, 8, 13};
 
   apply_qround(sample_qround, state);
-  return is_equal(expected, state, BLOCK_LENGTH);
+  return is_equal_uint32(expected, state, BLOCK_LENGTH);
 }
 
 int
@@ -117,12 +107,11 @@ test_block_function(void)
   uint32_t *actual = malloc(BLOCK_LENGTH*sizeof(char *));
 
   _chacha20_block(state);
-  int is_eq = is_equal(expected, state, BLOCK_LENGTH);
+  int is_eq = is_equal_uint32(expected, state, BLOCK_LENGTH);
 
   free(actual);
   return is_eq;
 }
-
 
 int
 test_block_function_api(void)
@@ -145,12 +134,7 @@ test_block_function_api(void)
   uint8_t *actual = malloc(sizeof(uint8_t)*BLOCK_LENGTH*4);
   chacha20_block(state, actual);
 
-  int is_eq = 1;
-  for (int i=0; i<64; i++) { // TODO use helper function
-    if (expected[i] != actual[i]) {
-      is_eq = 0;
-    }
-  }
+  int is_eq = is_equal(expected, actual, 64);
 
   free(actual);
   return is_eq;
@@ -212,12 +196,7 @@ int test_chacha20_encrypt(void) {
                    plaintext_length,
                    ciphertext);
 
-  int is_eq = 1;
-  for (int i=0; i<64; i++) { // TODO use helper function and not magic numbers
-    if (expected[i] != ciphertext[i]) {
-      is_eq = 0;
-    }
-  }
+  int is_eq = is_equal(expected, ciphertext, 64);
 
   free(ciphertext);
   return is_eq;
