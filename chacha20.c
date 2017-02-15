@@ -83,7 +83,7 @@ build_initial_block(uint8_t *key,
 }
 
 void
-_chacha20_block(uint32_t *state)
+chacha20_block(uint32_t *state)
 {
   uint32_t working_state[BLOCK_LENGTH];
   for (int i=0; i<BLOCK_LENGTH; i++){
@@ -107,9 +107,9 @@ _chacha20_block(uint32_t *state)
 }
 
 void
-chacha20_block(uint32_t *state, uint8_t *output)
+chacha20_block_and_serialize(uint32_t *state, uint8_t *output)
 {
-  _chacha20_block(state);
+  chacha20_block(state);
   serialize(state, output);
 }
 
@@ -121,7 +121,7 @@ build_initial_block_and_serialize(uint8_t *key,
 {
   uint32_t *state = malloc(BLOCK_LENGTH*sizeof(uint32_t));
   build_initial_block(key, counter, nonce, state);
-  _chacha20_block(state);
+  chacha20_block(state);
   serialize(state, output);
   free(state);
 }
