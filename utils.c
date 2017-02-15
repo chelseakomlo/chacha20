@@ -5,8 +5,10 @@
 void
 slice(unsigned char *text, unsigned char *copy, int start, int end)
 {
+  int dest_index = 0;
   for (int i=start; i<end; i++) {
-    copy[i] = text[i];
+    copy[dest_index] = text[i];
+    dest_index++;
   }
 }
 

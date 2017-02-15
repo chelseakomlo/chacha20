@@ -34,7 +34,7 @@ test_serialize(void)
 }
 
 int
-test_slice(void)
+test_slice_starting_position(void)
 {
   unsigned char text[] = "hello this is a test";
   int start = 0;
@@ -48,3 +48,21 @@ test_slice(void)
   free(actual);
   return is_eq;
 }
+
+int
+test_slice_ending_position(void)
+{
+  unsigned char text[20] = "hello";
+  int start = 2;
+  int end = 5;
+  const unsigned char expected[] = "llo";
+  int span = end - start;
+  unsigned char *actual = malloc(span*sizeof(char));
+
+  slice(text, actual, start, end);
+  int is_eq = is_equal(expected, actual, span);
+
+  free(actual);
+  return is_eq;
+}
+
