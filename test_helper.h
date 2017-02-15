@@ -13,7 +13,8 @@ int (*all_tests[])(void) = {
   test_block_function,
   test_serialize,
   test_block_function_api,
-  test_slice
+  test_slice,
+  test_build_initial_block_and_serialize
   //test_chacha20_encrypt
 };
 

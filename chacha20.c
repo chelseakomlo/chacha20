@@ -55,7 +55,7 @@ to_uint32(uint8_t a, uint8_t b, uint8_t c, uint8_t d)
 }
 
 void
-_build_initial_block(uint8_t *key,
+build_initial_block(uint8_t *key,
                     uint32_t counter,
                     uint8_t *nonce,
                     uint32_t *state)
@@ -114,18 +114,18 @@ chacha20_block(uint32_t *state, uint8_t *output)
 }
 
 void
-build_initial_block(uint8_t *key,
-                    uint32_t counter,
-                    uint8_t *nonce,
-                    unsigned char *output)
+build_initial_block_and_serialize(uint8_t *key,
+                                  uint32_t counter,
+                                  uint8_t *nonce,
+                                  unsigned char *output)
 {
-  uint32_t *state = malloc(BLOCK_LENGTH*sizeof(char));
-  _build_initial_block(key, counter, nonce, state);
+  uint32_t *state = malloc(BLOCK_LENGTH*sizeof(uint32_t));
+  build_initial_block(key, counter, nonce, state);
+  _chacha20_block(state);
   serialize(state, output);
   free(state);
 }
 
-// TODO finish
 void chacha20_encrypt(uint8_t *key,
                  uint32_t counter,
                  uint8_t *nonce,

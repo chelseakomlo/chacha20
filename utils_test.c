@@ -24,7 +24,7 @@ test_serialize(void)
                                      0xcb, 0xd0, 0x83, 0xe8, 0xa2, 0x50, 0x3c,
                                      0x4e };
 
-  unsigned char *actual = malloc(sizeof(uint8_t)*BLOCK_LENGTH*4);
+  unsigned char *actual = malloc(sizeof(char)*BYTE_LENGTH);
 
   serialize(state, actual);
   int is_eq = is_equal(expected, actual, 64);
