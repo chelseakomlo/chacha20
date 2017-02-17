@@ -165,7 +165,9 @@ test_block_function_api(void)
   uint8_t *actual = malloc(sizeof(uint8_t)*BLOCK_LENGTH*4);
   chacha20_block_and_serialize(state, actual);
 
-  return is_equal(expected, actual, 64);
+  int is_eq = is_equal(expected, actual, 64);
+  free(actual);
+  return is_eq;
 }
 
 int
