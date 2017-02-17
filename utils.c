@@ -2,6 +2,7 @@
 
 #include "chacha20.h"
 
+// TODO this should be collapsed with xor and use memcpy
 void
 slice(unsigned char *text, unsigned char *copy, int start, int end)
 {

@@ -25,6 +25,9 @@ test_build_block(void)
 
   uint32_t *state = malloc(BYTE_LENGTH*sizeof(char));
 
+  if (!state)
+    return 0;
+
   build_block(key, counter, nonce, state);
   int is_eq = is_equal_uint32(expected, state, BLOCK_LENGTH);
 
@@ -163,6 +166,10 @@ test_block_function_api(void)
                              };
 
   uint8_t *actual = malloc(sizeof(uint8_t)*BLOCK_LENGTH*4);
+
+  if (!actual)
+    return 0;
+
   chacha20_block_and_serialize(state, actual);
 
   int is_eq = is_equal(expected, actual, 64);
@@ -195,6 +202,9 @@ test_build_block_and_serialize(void)
                       0x00, 0x00, 0x00 };
 
   unsigned char *state = malloc(sizeof(char)*BYTE_LENGTH);
+
+  if (!state)
+    return 0;
 
   build_block_and_serialize(key, counter, nonce, state);
   int is_eq = is_equal(expected, state, BYTE_LENGTH);
@@ -251,6 +261,9 @@ int test_chacha20_encrypt(void) {
                                0x87, 0x4d };
 
   unsigned char *ciphertext = malloc(plaintext_length*sizeof(char));
+
+  if (!ciphertext)
+    return 0;
 
   chacha20_encrypt(key,
                    counter,

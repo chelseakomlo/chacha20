@@ -120,6 +120,10 @@ build_block_and_serialize(uint8_t *key,
                                   unsigned char *output)
 {
   uint32_t *state = malloc(BLOCK_LENGTH*sizeof(uint32_t));
+
+  if (!state)
+    return;
+
   build_block(key, counter, nonce, state);
   chacha20_block(state);
   serialize(state, output);
@@ -137,6 +141,9 @@ chacha20_encrypt(uint8_t *key,
   uint32_t counter = starting_counter;
   unsigned char *keystream = malloc(BYTE_LENGTH*sizeof(char));
   unsigned char *block = malloc(BYTE_LENGTH*sizeof(char));
+
+  if (!keystream || !block)
+    return;
 
   uint32_t i;
   for (i=0; i<(plaintext_length/(BYTE_LENGTH-1)); i+=BYTE_LENGTH) {
