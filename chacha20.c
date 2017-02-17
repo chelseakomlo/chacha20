@@ -126,12 +126,34 @@ build_block_and_serialize(uint8_t *key,
   free(state);
 }
 
-void chacha20_encrypt(uint8_t *key,
-                 uint32_t counter,
+void
+chacha20_encrypt(uint8_t *key,
+                 uint32_t starting_counter,
                  uint8_t *nonce,
                  unsigned char *plaintext,
                  uint32_t plaintext_length,
                  unsigned char *ciphertext)
 {
+  uint32_t counter = starting_counter;
+  unsigned char *keystream = malloc(BYTE_LENGTH*sizeof(char));
+  unsigned char *block = malloc(BYTE_LENGTH*sizeof(char));
+
+  uint32_t i;
+  for (i=0; i<(plaintext_length/(BYTE_LENGTH-1)); i+=BYTE_LENGTH) {
+    build_block_and_serialize(key, counter, nonce, keystream);
+    slice(plaintext, block, i, BYTE_LENGTH);
+    xor_block(block, keystream, BYTE_LENGTH);
+    memcpy(ciphertext+i, block, BYTE_LENGTH*sizeof(char));
+    counter++;
+  }
+
+  int remaining = plaintext_length%64;
+  build_block_and_serialize(key, counter, nonce, keystream);
+  slice(plaintext, block, i, i+remaining);
+  xor_block(block, keystream, remaining);
+  memcpy(ciphertext+i, block, remaining*sizeof(char));
+
+  free(keystream);
+  free(block);
 }
 

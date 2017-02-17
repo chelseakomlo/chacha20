@@ -104,13 +104,44 @@ test_block_function(void)
                        0x13121110, 0x17161514, 0x1b1a1918, 0x1f1e1d1c,
                        0x00000001, 0x09000000, 0x4a000000, 0x00000000 };
 
-  uint32_t *actual = malloc(BLOCK_LENGTH*sizeof(char *));
+  chacha20_block(state);
+  return is_equal_uint32(expected, state, BLOCK_LENGTH);
+}
+
+int
+test_block_function_second_case(void)
+{
+  uint32_t state[] = { 0x61707865, 0x3320646e, 0x79622d32, 0x6b206574,
+                       0x03020100, 0x07060504, 0x0b0a0908, 0x0f0e0d0c,
+                       0x13121110, 0x17161514, 0x1b1a1918, 0x1f1e1d1c,
+                       0x00000001, 0x00000000, 0x4a000000, 0x00000000 };
+
+  const uint32_t expected[] = { 0xf3514f22, 0xe1d91b40, 0x6f27de2f, 0xed1d63b8,
+                                0x821f138c, 0xe2062c3d, 0xecca4f7e, 0x78cff39e,
+                                0xa30a3b8a, 0x920a6072, 0xcd7479b5, 0x34932bed,
+                                0x40ba4c79, 0xcd343ec6, 0x4c2c21ea, 0xb7417df0
+                              };
 
   chacha20_block(state);
-  int is_eq = is_equal_uint32(expected, state, BLOCK_LENGTH);
+  return is_equal_uint32(expected, state, BLOCK_LENGTH);
+}
 
-  free(actual);
-  return is_eq;
+int
+test_block_function_third_case(void)
+{
+  uint32_t state[] = { 0x61707865, 0x3320646e, 0x79622d32, 0x6b206574,
+                       0x03020100, 0x07060504, 0x0b0a0908, 0x0f0e0d0c,
+                       0x13121110, 0x17161514, 0x1b1a1918, 0x1f1e1d1c,
+                       0x00000002, 0x00000000, 0x4a000000, 0x00000000 };
+
+  const uint32_t expected[] = { 0x9f74a669, 0x410f633f, 0x28feca22, 0x7ec44dec,
+                                0x6d34d426, 0x738cb970, 0x3ac5e9f3, 0x45590cc4,
+                                0xda6e8b39, 0x892c831a, 0xcdea67c1, 0x2b7e1d90,
+                                0x037463f3, 0xa11a2073, 0xe8bcfb88, 0xedc49139
+                              };
+
+  chacha20_block(state);
+  return is_equal_uint32(expected, state, BLOCK_LENGTH);
 }
 
 int
@@ -134,10 +165,7 @@ test_block_function_api(void)
   uint8_t *actual = malloc(sizeof(uint8_t)*BLOCK_LENGTH*4);
   chacha20_block_and_serialize(state, actual);
 
-  int is_eq = is_equal(expected, actual, 64);
-
-  free(actual);
-  return is_eq;
+  return is_equal(expected, actual, 64);
 }
 
 int
@@ -181,7 +209,7 @@ int test_chacha20_encrypt(void) {
                     0x1b, 0x1c, 0x1d, 0x1e, 0x1f };
 
   uint32_t counter = 1;
-  uint8_t nonce[] = { 0x00, 0x00, 0x00, 0x09, 0x00, 0x00, 0x00, 0x4a, 0x00,
+  uint8_t nonce[] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x4a, 0x00,
                       0x00, 0x00, 0x00 };
 
   unsigned char plaintext[114] = { 0x4c, 0x61, 0x64, 0x69, 0x65, 0x73, 0x20,
@@ -204,7 +232,7 @@ int test_chacha20_encrypt(void) {
 
   uint32_t plaintext_length = sizeof(plaintext);
 
-  unsigned char expected[] = { 0x6e, 0x2e, 0x35, 0x9a, 0x25, 0x68, 0xf9, 0x80,
+  unsigned char expected[114] = { 0x6e, 0x2e, 0x35, 0x9a, 0x25, 0x68, 0xf9, 0x80,
                                0x41, 0xba, 0x07, 0x28, 0xdd, 0x0d, 0x69, 0x81,
                                0xe9, 0x7e, 0x7a, 0xec, 0x1d, 0x43, 0x60, 0xc2,
                                0x0a, 0x27, 0xaf, 0xcc, 0xfd, 0x9f, 0xae, 0x0b,
@@ -220,7 +248,7 @@ int test_chacha20_encrypt(void) {
                                0xb4, 0x0b, 0x8e, 0xed, 0xf2, 0x78, 0x5e, 0x42,
                                0x87, 0x4d };
 
-  unsigned char *ciphertext = malloc(plaintext_length);
+  unsigned char *ciphertext = malloc(plaintext_length*sizeof(char));
 
   chacha20_encrypt(key,
                    counter,
@@ -229,7 +257,7 @@ int test_chacha20_encrypt(void) {
                    plaintext_length,
                    ciphertext);
 
-  int is_eq = is_equal(expected, ciphertext, 64);
+  int is_eq = is_equal(expected, ciphertext, plaintext_length);
 
   free(ciphertext);
   return is_eq;
