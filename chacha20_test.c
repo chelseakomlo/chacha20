@@ -5,7 +5,7 @@
 #include "test_utils.h"
 
 int
-test_build_initial_block(void)
+test_build_block(void)
 {
   const uint32_t expected[] = { 0x61707865, 0x3320646e, 0x79622d32, 0x6b206574,
                                 0x03020100, 0x07060504, 0x0b0a0908, 0x0f0e0d0c,
@@ -25,7 +25,7 @@ test_build_initial_block(void)
 
   uint32_t *state = malloc(BYTE_LENGTH*sizeof(char));
 
-  build_initial_block(key, counter, nonce, state);
+  build_block(key, counter, nonce, state);
   int is_eq = is_equal_uint32(expected, state, BLOCK_LENGTH);
 
   free(state);
@@ -141,7 +141,7 @@ test_block_function_api(void)
 }
 
 int
-test_build_initial_block_and_serialize(void)
+test_build_block_and_serialize(void)
 {
   const unsigned char expected[] = { 0x10, 0xf1, 0xe7, 0xe4, 0xd1, 0x3b, 0x59,
                                      0x15, 0x50, 0x0f, 0xdd, 0x1f, 0xa3, 0x20,
@@ -166,7 +166,7 @@ test_build_initial_block_and_serialize(void)
 
   unsigned char *state = malloc(sizeof(char)*BYTE_LENGTH);
 
-  build_initial_block_and_serialize(key, counter, nonce, state);
+  build_block_and_serialize(key, counter, nonce, state);
   int is_eq = is_equal(expected, state, BYTE_LENGTH);
 
   free(state);

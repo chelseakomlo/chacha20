@@ -5,7 +5,7 @@
 #define TEST_HELPER_H
 
 int (*all_tests[])(void) = {
-  test_build_initial_block,
+  test_build_block,
   test_apply_qround,
   test_apply_rules,
   test_to_uint32,
@@ -15,7 +15,7 @@ int (*all_tests[])(void) = {
   test_block_function_api,
   test_slice_starting_position,
   test_slice_ending_position,
-  test_build_initial_block_and_serialize,
+  test_build_block_and_serialize,
   //test_chacha20_encrypt
 };
 
