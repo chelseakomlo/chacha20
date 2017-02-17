@@ -34,3 +34,9 @@ serialize(uint32_t *state, unsigned char *serialized)
     counter += 4;
   }
 }
+
+uint32_t
+rotate(uint32_t a, int i)
+{
+  return (a<<i) | (a>>(32-i));
+}
